@@ -1,0 +1,134 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pancific's Wraps & Beyond</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Trebuchet MS', sans-serif;
+      background: url('background.png') no-repeat top center/cover fixed;
+      color: #3d260f;
+    }
+    .form-card {
+      background-color: rgba(255, 250, 240, 0.9);
+      max-width: 420px;
+      margin: 2rem auto;
+      padding: 2rem;
+      border-radius: 1.5rem;
+      box-shadow: 0 0 12px rgba(0,0,0,0.25);
+    }
+    h1 {
+      text-align: center;
+      color: #5c2e0b;
+      font-size: 1.8rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    p {
+      text-align: center;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    .checkbox-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem 1rem;
+      margin-bottom: 1rem;
+    }
+    label {
+      font-size: 0.95rem;
+    }
+    input[type="text"],
+    input[type="email"] {
+      width: 48%;
+      padding: 0.6rem;
+      margin: 0.5rem 1%;
+      border: 1px solid #c0a678;
+      border-radius: 0.6rem;
+      background-color: #fffaf3;
+    }
+    button {
+      background-color: #f76c2e;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 1rem;
+      padding: 1rem;
+      width: 100%;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    button:hover {
+      background-color: #d95b20;
+    }
+    .small-link {
+      font-size: 0.85rem;
+      margin-top: 1rem;
+      display: inline-block;
+      color: #3d260f;
+      text-align: center;
+      width: 100%;
+      text-decoration: none;
+    }
+    .small-link::after {
+      content: ' ⬇️';
+    }
+    .tooltip {
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+      text-align: center;
+      color: #5c4323;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-card">
+    <h1>Pancific's Wraps & Beyond</h1>
+    <p>Base du taco : demander au chef</p>
+    <form id="order-form">
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="toppings" value="Thai basilic, coriander"> Thai basilic, coriander</label>
+        <label><input type="checkbox" name="toppings" value="Zeste de combava"> Zeste de combava</label>
+        <label><input type="checkbox" name="toppings" value="Combava"> Combava</label>
+        <label><input type="checkbox" name="toppings" value="Concombre"> Concombre</label>
+        <label><input type="checkbox" name="toppings" value="Sauce cacahuète"> Sauce cacahuète (⚠️ allergène)</label>
+      </div>
+      <input type="text" name="pseudo" placeholder="Pseudo" required />
+      <input type="email" name="email" placeholder="Email" required />
+      <button type="submit">📦 Envoyer la commande</button>
+    </form>
+    <a href="#" class="small-link">Consulter la liste des allergènes</a>
+    <div class="tooltip">
+      JB : “Ni maintenant, ni dans 3 mois, s'engage à respecter vos papilles ainsi que votre droit légal inaliénable à voir sans rencontrer de pépins : avec vous pour vous nourrir 🤡🤡🤡”
+    </div>
+  </div>
+  <script>
+    document.getElementById("order-form").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const pseudo = document.querySelector('input[name="pseudo"]').value;
+      const email = document.querySelector('input[name="email"]').value;
+      const toppings = Array.from(document.querySelectorAll('input[name="toppings"]:checked')).map(e => e.value);
+      const res = await fetch("https://script.google.com/macros/s/AKfycby5WVBdGcmTE5Pbp8uRtoiNaOojoLjntukwIGWXuFwuourlVn2sK7r7zP_IqgYhBCbYeA/exec", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          pseudo: pseudo,
+          email: email,
+          toppings: toppings.join(", ")
+        })
+      });
+      if (res.ok) {
+        alert("Commande envoyée !");
+      } else {
+        alert("Erreur lors de l'envoi de la commande.");
+      }
+    });
+  </script>
+</body>
+</html>
